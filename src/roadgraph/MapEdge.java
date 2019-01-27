@@ -5,8 +5,11 @@ package roadgraph;
 
 import geography.GeographicPoint;
 
-
-
+/**
+ * @author UCSD Intermediate Programming MOOC team
+ *
+ * A directed edge in a map graph from Node start to Node end
+ */
 class MapEdge
 {
     /** The name of the road */
@@ -15,7 +18,7 @@ class MapEdge
     /** The type of the road */
     private String roadType;
 
-    /** The two end points of the edge */
+    /** The two endpoints of the edge */
     private MapNode start;
     private MapNode end;
 
@@ -26,8 +29,26 @@ class MapEdge
     static final double DEFAULT_LENGTH = 0.01;
 
 
+    /** Create a new MapEdge object
+     *
+     * @param roadName
+     * @param n1  The point at one end of the segment
+     * @param n2  The point at the other end of the segment
+     *
+     */
+    MapEdge(String roadName, MapNode n1, MapNode n2)
+    {
+        this(roadName, "", n1, n2, DEFAULT_LENGTH);
+    }
+
+    MapEdge(String roadName, String roadType, MapNode n1, MapNode n2)
+    {
+        this(roadName, roadType, n1, n2, DEFAULT_LENGTH);
+    }
+
     MapEdge(String roadName, String roadType,
-            MapNode n1, MapNode n2, double length) {
+            MapNode n1, MapNode n2, double length)
+    {
         this.roadName = roadName;
         start = n1;
         end = n2;
@@ -35,48 +56,38 @@ class MapEdge
         this.length = length;
     }
 
-
+    // return the MapNode for the end point
     MapNode getEndNode() {
         return end;
     }
 
-    /**
-     * Return the location of the start point
-     * @return The location of the start point as a GeographicPoint
-     */
+    // return the location of the start point
     GeographicPoint getStartPoint()
     {
         return start.getLocation();
     }
 
-    /**
-     * Return the location of the end point
-     * @return The location of the end point as a GeographicPoint
-     */
+    // return the location of the end point
     GeographicPoint getEndPoint()
     {
         return end.getLocation();
     }
 
-    /**
-     * Return the length of this road segment
-     * @return the length of the road segment
-     */
-    public double getLength() //use this for project
+    // return the length
+    double getLength()
     {
         return length;
     }
 
-    /**
-     * Get the road's name
-     * @return the name of the road that this edge is on
-     */
+
+
+    // return road name
     public String getRoadName()
     {
         return roadName;
     }
 
-
+    // given one node in an edge, return the other node
     MapNode getOtherNode(MapNode node)
     {
         if (node.equals(start))
@@ -87,8 +98,7 @@ class MapEdge
                 "a point that is not in the edge");
     }
 
-
-    @Override
+    // return String containing details about the edge
     public String toString()
     {
         String toReturn = "[EDGE between ";

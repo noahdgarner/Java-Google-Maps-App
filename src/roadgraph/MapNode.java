@@ -8,19 +8,33 @@ import java.util.Set;
 
 import geography.GeographicPoint;
 
+import static java.lang.Double.*;
+
 /**
  * @author UCSD MOOC development team
  *
  * Class representing a vertex (or node) in our MapGraph
  *
  */
-class MapNode
-{
+class MapNode implements Comparable<MapNode> //when implementing comparable, your comparing an object against another
+{                                                                                //of the same kind
     /** The list of edges out of this node */
     private HashSet<MapEdge> edges;
 
     /** the latitude and longitude of this node */
     private GeographicPoint location;
+
+    private double actualDistance; //starts at infinity.
+
+    private double predictedDistance;
+
+    public double getDistance() {
+        return predictedDistance;
+    }
+
+    public void setDistance(double predictedDistance) {
+        this.predictedDistance = predictedDistance;
+    }
 
     /**
      * Create a new MapNode at a given Geographic location
@@ -28,8 +42,11 @@ class MapNode
      */
     MapNode(GeographicPoint loc)
     {
-        location = loc;
-        edges = new HashSet<MapEdge>();
+        this.location = loc;
+        this.edges = new HashSet<>();
+        //we need this
+        this.actualDistance = 0.0;//init infinity, dumb this makes no sense
+        this.predictedDistance = 0.0;
     }
 
     /**
@@ -72,12 +89,24 @@ class MapNode
         return edges;
     }
 
-    /** Returns whether two nodes are equal.
-     * Nodes are considered equal if their locations are the same,
-     * even if their street list is different.
-     * @param o the node to compare to
-     * @return true if these nodes are at the same location, false otherwise
-     */
+    public Double getActualDistance() {
+        return actualDistance;
+    }
+
+    public void setActualDistance(Double actualDistance) {
+        this.actualDistance = actualDistance;
+    }
+
+    @Override
+    //DEFAULT COMPARETO METHOD IN JAVA IS IMPLEMENTED AS MIN HEAP!!!!
+    //if a negative value is returned, it knows to bubble up the value until it is inserted
+    //in a position where it is smaller than all of its children, but  larger than all of its parents.
+    public int compareTo(MapNode otherNode) {
+        //you need to cast it as a double so you can treat this as the expected type Double when comparing
+        return ((Double)this.getDistance()).compareTo(otherNode.getDistance());
+    }
+
+
     @Override
     public boolean equals(Object o)
     {
@@ -93,6 +122,7 @@ class MapNode
      * @return The HashCode for this node, which is the HashCode for the
      * underlying point
      */
+
     @Override
     public int hashCode()
     {
